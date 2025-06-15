@@ -108,9 +108,10 @@ After frontend deployment:
 
 2. **Update Render Backend Environment Variables**:
    - Go to Render Dashboard → Your backend service → Environment
-   - Set `FRONTEND_URL` to your Workers URL
+   - Set `FRONTEND_URL` to your Workers URL **without trailing slash**
    - Optionally set `CLOUDFLARE_WORKERS_URL` to the same URL
    - Example: `FRONTEND_URL=https://starter-webapp-frontend.your-subdomain.workers.dev`
+   - ⚠️ **Important**: Do NOT include trailing slash (/) at the end
 
 3. **Redeploy the backend service** (or it will auto-redeploy on environment change)
 
