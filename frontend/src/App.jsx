@@ -18,9 +18,23 @@ function App() {
 
     // Check health status
     fetch(`${apiUrl}/health`)
-      .then(res => res.json())
+      .then(res => {
+        if (!res.ok) {
+          throw new Error(`HTTP ${res.status}: ${res.statusText}`);
+        }
+        return res.json();
+      })
       .then(data => setHealth(data.status))
-      .catch(() => setHealth('unhealthy'))
+      .catch(err => {
+        console.error('Health check failed:', err);
+        if (err.message.includes('CORS')) {
+          setHealth('CORS error');
+        } else if (err.name === 'TypeError' && err.message.includes('fetch')) {
+          setHealth('CORS blocked');
+        } else {
+          setHealth(`unhealthy (${err.message})`);
+        }
+      })
 
     // Get users
     fetch(`${apiUrl}/api/users`)
@@ -55,6 +69,13 @@ function App() {
               <p className={`health-status ${health}`}>
                 {health || 'checking...'}
               </p>
+              {(health === 'CORS blocked' || health === 'CORS error') && (
+                <p className="cors-help">
+                  <small>
+                    💡 CORS issue detected. Set FRONTEND_URL in Render backend to: {window.location.origin}
+                  </small>
+                </p>
+              )}
             </div>
           </div>
         </section>

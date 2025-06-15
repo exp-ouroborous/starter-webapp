@@ -65,6 +65,20 @@
   border-radius: 4px;
 }
 
+.cors-help {
+  margin-top: 0.5rem;
+  padding: 0.5rem;
+  background-color: #fff3cd;
+  border: 1px solid #ffeaa7;
+  border-radius: 4px;
+  color: #856404;
+}
+
+.cors-help small {
+  font-size: 0.8rem;
+  line-height: 1.3;
+}
+
 .app-main {
   display: flex;
   flex-direction: column;
