@@ -1,0 +1,15 @@
+services:
+  - type: web
+    name: starter-webapp-backend
+    runtime: python
+    buildCommand: pip install -r requirements.txt
+    startCommand: uvicorn app.main:app --host 0.0.0.0 --port 10000
+    envVars:
+      - key: DATABASE_URL
+        value: postgresql://username:password@hostname:port/database
+      - key: ENVIRONMENT
+        value: production
+      - key: DEBUG
+        value: false
+      - key: FRONTEND_URL
+        value: https://your-frontend.pages.dev
