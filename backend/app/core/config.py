@@ -28,5 +28,14 @@ class Settings:
             production_origin = os.getenv("FRONTEND_URL")
             if production_origin:
                 self.ALLOWED_ORIGINS.append(production_origin)
+            
+            # Also check for specific Cloudflare URL
+            cloudflare_url = os.getenv("CLOUDFLARE_WORKERS_URL")
+            if cloudflare_url:
+                self.ALLOWED_ORIGINS.append(cloudflare_url)
+        
+        # Remove duplicates and print for debugging
+        self.ALLOWED_ORIGINS = list(set(self.ALLOWED_ORIGINS))
+        print(f"🔗 CORS Allowed Origins: {self.ALLOWED_ORIGINS}")
 
 settings = Settings()
