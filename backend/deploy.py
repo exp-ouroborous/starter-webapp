@@ -27,6 +27,10 @@ def check_environment():
     env = os.getenv("ENVIRONMENT", "development")
     if env != "production":
         print(f"⚠️  Warning: ENVIRONMENT is set to '{env}', not 'production'")
+        if not sys.stdin.isatty() or os.getenv("CI", "false").lower() == "true":
+            print("Skipping prompt due to non-interactive environment or CI mode")
+            print("Deployment cancelled")
+            sys.exit(1)
         response = input("Continue anyway? (y/N): ")
         if response.lower() != 'y':
             print("Deployment cancelled")
