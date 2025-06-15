@@ -100,14 +100,23 @@ The frontend is deployed as a Cloudflare Worker with:
 - **Security Headers**: Automatic security headers for all responses
 - **Caching**: Optimized caching for static assets vs HTML
 
-### 3. Update Backend CORS
+### 4. Update Backend CORS
 
 After frontend deployment:
 
-1. Go back to Render Dashboard
-2. Edit your backend service environment variables
-3. Set `FRONTEND_URL` to your Cloudflare Pages URL
-4. Redeploy the backend service
+1. **Get your Cloudflare Workers URL** (e.g., `https://starter-webapp-frontend.your-subdomain.workers.dev`)
+
+2. **Update Render Backend Environment Variables**:
+   - Go to Render Dashboard → Your backend service → Environment
+   - Set `FRONTEND_URL` to your Workers URL
+   - Optionally set `CLOUDFLARE_WORKERS_URL` to the same URL
+   - Example: `FRONTEND_URL=https://starter-webapp-frontend.your-subdomain.workers.dev`
+
+3. **Redeploy the backend service** (or it will auto-redeploy on environment change)
+
+4. **Verify CORS is working**:
+   - Check backend logs for: `🔗 CORS Allowed Origins: [...]`
+   - Should include your Workers URL in the list
 
 ## Testing Full-Stack Deployment
 
