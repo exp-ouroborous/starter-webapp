@@ -7,9 +7,6 @@ main = "src/worker.js"
 directory = "dist"
 binding = "ASSETS"
 
-# Build configuration
-[build]
-command = "npm ci && npm run build && npm run build:worker"
 
 # Environment variables
 [vars]

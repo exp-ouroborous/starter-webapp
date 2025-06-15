@@ -10,7 +10,7 @@
     "lint": "eslint .",
     "preview": "vite preview",
     "start": "vite preview --port 5173",
-    "deploy": "npx wrangler deploy",
+    "deploy": "npx wrangler deploy --env production",
     "deploy:dev": "npx wrangler deploy --env development",
     "deploy:preview": "npx wrangler deploy --env preview"
   },
