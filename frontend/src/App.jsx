@@ -7,6 +7,7 @@ function App() {
   const [health, setHealth] = useState(null)
 
   const apiUrl = import.meta.env.VITE_API_URL || 'http://localhost:8000'
+  const environment = import.meta.env.VITE_ENVIRONMENT || 'development'
 
   useEffect(() => {
     // Test API connection
@@ -33,6 +34,12 @@ function App() {
       <header className="app-header">
         <h1>Starter Web App</h1>
         <p className="subtitle">Full-stack template with FastAPI + React</p>
+        <div className="env-info">
+          <span className={`env-badge ${environment}`}>
+            {environment.toUpperCase()}
+          </span>
+          <span className="api-url">API: {apiUrl}</span>
+        </div>
       </header>
 
       <main className="app-main">

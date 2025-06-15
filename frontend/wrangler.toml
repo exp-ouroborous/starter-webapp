@@ -1,17 +1,44 @@
 name = "starter-webapp-frontend"
 compatibility_date = "2024-06-15"
 
+# Build configuration
 [build]
-command = "npm run build"
+command = "npm ci && npm run build"
 destination = "dist"
+watch_dir = "src"
 
-[[env_vars]]
+# Development environment
+[env.development]
+name = "starter-webapp-frontend-dev"
+
+[[env.development.env_vars]]
 name = "VITE_API_URL"
-value = "https://your-backend.onrender.com"
+value = "http://localhost:8000"
 
+[[env.development.env_vars]]
+name = "VITE_ENVIRONMENT"
+value = "development"
+
+# Production environment
 [env.production]
 name = "starter-webapp-frontend"
 
 [[env.production.env_vars]]
 name = "VITE_API_URL"
-value = "https://your-backend.onrender.com"
+value = "https://starter-webapp-backend.onrender.com"
+
+[[env.production.env_vars]]
+name = "VITE_ENVIRONMENT"
+value = "production"
+
+# Preview environment (for testing)
+[env.preview]
+name = "starter-webapp-frontend-preview"
+
+[[env.preview.env_vars]]
+name = "VITE_API_URL"  
+value = "https://starter-webapp-backend.onrender.com"
+
+[[env.preview.env_vars]]
+name = "VITE_ENVIRONMENT"
+value = "preview"

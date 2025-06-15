@@ -2,14 +2,27 @@ services:
   - type: web
     name: starter-webapp-backend
     runtime: python
-    buildCommand: pip install -r requirements.txt
-    startCommand: uvicorn app.main:app --host 0.0.0.0 --port 10000
+    plan: starter
+    region: oregon
+    buildCommand: pip install -r requirements.txt && python deploy.py
+    startCommand: uvicorn app.main:app --host 0.0.0.0 --port $PORT
+    healthCheckPath: /health
     envVars:
       - key: DATABASE_URL
-        value: postgresql://username:password@hostname:port/database
+        sync: false  # Set this in Render dashboard
       - key: ENVIRONMENT
         value: production
       - key: DEBUG
-        value: false
+        value: "false"
       - key: FRONTEND_URL
-        value: https://your-frontend.pages.dev
+        sync: false  # Set this in Render dashboard after frontend deployment
+      - key: PYTHONPATH
+        value: /opt/render/project/src
+      - key: PORT
+        value: "10000"
+
+databases:
+  - name: starter-webapp-db
+    plan: starter
+    databaseName: starter_webapp
+    user: starter_webapp_user
