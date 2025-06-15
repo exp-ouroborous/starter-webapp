@@ -239,7 +239,7 @@ starter-webapp/
 
 ### Deployment Ready
 - ✅ Automated backend deployment to Render
-- ✅ Automated frontend deployment to Cloudflare Pages  
+- ✅ Automated frontend deployment to Cloudflare Workers
 - ✅ GitHub Actions CI/CD workflows
 - ✅ Production-ready database configuration
 - ✅ Environment-based configuration management
@@ -253,13 +253,13 @@ This application is production-ready with automated deployment configurations fo
 **Automated Setup (Recommended):**
 1. Fork this repository
 2. Set up backend on Render (see [DEPLOYMENT.md](DEPLOYMENT.md))
-3. Set up frontend on Cloudflare Pages (see [DEPLOYMENT.md](DEPLOYMENT.md))
+3. Set up frontend on Cloudflare Workers (see [DEPLOYMENT.md](DEPLOYMENT.md))
 4. Configure GitHub Actions secrets
 5. Push to main branch - deployments happen automatically!
 
 **Manual Setup:**
 - Backend: Render will auto-deploy from `render.yaml` configuration
-- Frontend: Cloudflare Pages will auto-deploy from `wrangler.toml`
+- Frontend: Cloudflare Workers will auto-deploy from `wrangler.toml`
 
 ### Backend (Render)
 
@@ -275,15 +275,16 @@ This application is production-ready with automated deployment configurations fo
 - Connection pooling for PostgreSQL
 - Automatic CORS configuration
 
-### Frontend (Cloudflare Pages)
+### Frontend (Cloudflare Workers)
 
 **Automatic Configuration:**
 - Multi-environment support (dev/preview/production)
-- Optimized build configuration
-- Environment variable injection
+- Static asset serving with Workers
+- SPA routing support for React
 
 **Key Features:**
-- `wrangler.toml` with environment-specific settings
+- `wrangler.toml` with Workers configuration
+- Custom worker script for asset handling
 - GitHub Actions workflow for CI/CD
 - Environment indicators in UI
 - Automatic API URL configuration

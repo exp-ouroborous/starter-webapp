@@ -6,9 +6,13 @@
   "scripts": {
     "dev": "vite",
     "build": "vite build",
+    "build:worker": "echo 'Worker script ready'",
     "lint": "eslint .",
     "preview": "vite preview",
-    "start": "vite preview --port 5173"
+    "start": "vite preview --port 5173",
+    "deploy": "wrangler deploy",
+    "deploy:dev": "wrangler deploy --env development",
+    "deploy:preview": "wrangler deploy --env preview"
   },
   "dependencies": {
     "react": "^19.1.0",
