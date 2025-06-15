@@ -1,44 +1,41 @@
 name = "starter-webapp-frontend"
 compatibility_date = "2024-06-15"
+main = "src/worker.js"
+
+# Assets configuration for static files
+[assets]
+directory = "dist"
+binding = "ASSETS"
 
 # Build configuration
 [build]
-command = "npm ci && npm run build"
-destination = "dist"
-watch_dir = "src"
+command = "npm ci && npm run build && npm run build:worker"
+
+# Environment variables
+[vars]
+VITE_API_URL = "https://starter-webapp-backend.onrender.com"
+VITE_ENVIRONMENT = "production"
 
 # Development environment
 [env.development]
 name = "starter-webapp-frontend-dev"
 
-[[env.development.env_vars]]
-name = "VITE_API_URL"
-value = "http://localhost:8000"
-
-[[env.development.env_vars]]
-name = "VITE_ENVIRONMENT"
-value = "development"
+[env.development.vars]
+VITE_API_URL = "http://localhost:8000"
+VITE_ENVIRONMENT = "development"
 
 # Production environment
 [env.production]
 name = "starter-webapp-frontend"
 
-[[env.production.env_vars]]
-name = "VITE_API_URL"
-value = "https://starter-webapp-backend.onrender.com"
+[env.production.vars]
+VITE_API_URL = "https://starter-webapp-backend.onrender.com"
+VITE_ENVIRONMENT = "production"
 
-[[env.production.env_vars]]
-name = "VITE_ENVIRONMENT"
-value = "production"
-
-# Preview environment (for testing)
+# Preview environment
 [env.preview]
 name = "starter-webapp-frontend-preview"
 
-[[env.preview.env_vars]]
-name = "VITE_API_URL"  
-value = "https://starter-webapp-backend.onrender.com"
-
-[[env.preview.env_vars]]
-name = "VITE_ENVIRONMENT"
-value = "preview"
+[env.preview.vars]
+VITE_API_URL = "https://starter-webapp-backend.onrender.com"
+VITE_ENVIRONMENT = "preview"

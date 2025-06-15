@@ -20,7 +20,17 @@ if config.config_file_name is not None:
 target_metadata = Base.metadata
 
 def get_url():
-    return settings.DATABASE_URL
+    database_url = settings.DATABASE_URL
+    original_url = database_url
+    if database_url.startswith("postgresql://"):
+        database_url = database_url.replace("postgresql://", "postgresql+psycopg://", 1)
+        print(f"🔧 Using PostgreSQL configuration with psycopg3 driver")
+        print(f"🔄 Converted URL from: {original_url}")
+        print(f"🔗 Final database URL: {database_url}")
+    else:
+        print(f"🔧 Using PostgreSQL configuration")
+        print(f"🔗 Final database URL: {database_url}")
+    return database_url
 
 def run_migrations_offline() -> None:
     url = get_url()

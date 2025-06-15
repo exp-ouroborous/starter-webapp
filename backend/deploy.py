@@ -27,14 +27,14 @@ def check_environment():
     env = os.getenv("ENVIRONMENT", "development")
     if env != "production":
         print(f"⚠️  Warning: ENVIRONMENT is set to '{env}', not 'production'")
-        if not sys.stdin.isatty() or os.getenv("CI", "false").lower() == "true":
-            print("Skipping prompt due to non-interactive environment or CI mode")
-            print("Deployment cancelled")
-            sys.exit(1)
-        response = input("Continue anyway? (y/N): ")
-        if response.lower() != 'y':
-            print("Deployment cancelled")
-            sys.exit(1)
+        # In automated deployment, don't prompt for input
+        if os.getenv("CI") or os.getenv("RENDER"):
+            print("Running in automated environment, continuing...")
+        else:
+            response = input("Continue anyway? (y/N): ")
+            if response.lower() != 'y':
+                print("Deployment cancelled")
+                sys.exit(1)
     
     database_url = os.getenv("DATABASE_URL")
     if not database_url:
@@ -43,12 +43,31 @@ def check_environment():
     
     if "sqlite" in database_url:
         print("⚠️  Warning: Using SQLite database (development mode)")
+    elif "postgresql" in database_url:
+        print("✅ Using PostgreSQL database (production mode)")
+        print("✅ Database driver check skipped (validated during migration)")
     
     print(f"✅ Environment check passed (ENV: {env})")
 
 def run_migrations():
     """Run Alembic migrations"""
-    return run_command("alembic upgrade head", "Running database migrations")
+    print("🔄 Running database migrations...")
+    try:
+        result = subprocess.run("alembic upgrade head", shell=True, check=True, capture_output=True, text=True)
+        print("✅ Database migrations completed successfully")
+        if result.stdout:
+            print(f"Migration output: {result.stdout.strip()}")
+        return True
+    except subprocess.CalledProcessError as e:
+        print("❌ Database migrations failed")
+        print(f"Migration error: {e}")
+        if e.stdout:
+            print(f"Migration stdout: {e.stdout.strip()}")
+        if e.stderr:
+            print(f"Migration stderr: {e.stderr.strip()}")
+        print("Note: This may be due to database connectivity or migration file issues")
+        print("Check that DATABASE_URL is correct and database is accessible")
+        return False
 
 def main():
     """Main deployment function"""

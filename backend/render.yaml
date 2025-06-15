@@ -4,7 +4,10 @@ services:
     runtime: python
     plan: starter
     region: oregon
-    buildCommand: pip install -r requirements.txt && python deploy.py
+    buildCommand: |
+      pip install --upgrade pip &&
+      pip install -r requirements.txt &&
+      python deploy.py
     startCommand: uvicorn app.main:app --host 0.0.0.0 --port $PORT
     healthCheckPath: /health
     envVars:

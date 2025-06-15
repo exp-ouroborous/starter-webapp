@@ -1,4 +1,4 @@
-name: Deploy Frontend to Cloudflare Pages
+name: Deploy Frontend to Cloudflare Workers
 
 on:
   push:
@@ -17,7 +17,7 @@ on:
 jobs:
   deploy:
     runs-on: ubuntu-latest
-    name: Deploy to Cloudflare Pages
+    name: Deploy to Cloudflare Workers
     steps:
       - name: Checkout
         uses: actions/checkout@v4
@@ -40,17 +40,12 @@ jobs:
           VITE_API_URL: ${{ secrets.VITE_API_URL || 'https://starter-webapp-backend.onrender.com' }}
           VITE_ENVIRONMENT: production
 
-      - name: Publish to Cloudflare Pages
-        uses: cloudflare/pages-action@v1
-        with:
-          apiToken: ${{ secrets.CLOUDFLARE_API_TOKEN }}
-          accountId: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
-          projectName: starter-webapp-frontend
-          directory: frontend/dist
-          # Optional: git tag to use for this deployment
-          gitHubToken: ${{ secrets.GITHUB_TOKEN }}
-          # Optional: Enable Wrangler CLI
-          wranglerVersion: '3'
+      - name: Deploy to Cloudflare Workers
+        working-directory: frontend
+        run: npm run deploy
+        env:
+          CLOUDFLARE_API_TOKEN: ${{ secrets.CLOUDFLARE_API_TOKEN }}
+          CLOUDFLARE_ACCOUNT_ID: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
 
   lint:
     runs-on: ubuntu-latest
