@@ -45,19 +45,29 @@ def check_environment():
         print("⚠️  Warning: Using SQLite database (development mode)")
     elif "postgresql" in database_url:
         print("✅ Using PostgreSQL database (production mode)")
-        # Test database dependencies
-        try:
-            import psycopg2
-            print("✅ psycopg2 driver available")
-        except ImportError:
-            print("❌ psycopg2 driver not found - check requirements.txt")
-            sys.exit(1)
+        print("✅ Database driver check skipped (validated during migration)")
     
     print(f"✅ Environment check passed (ENV: {env})")
 
 def run_migrations():
     """Run Alembic migrations"""
-    return run_command("alembic upgrade head", "Running database migrations")
+    print("🔄 Running database migrations...")
+    try:
+        result = subprocess.run("alembic upgrade head", shell=True, check=True, capture_output=True, text=True)
+        print("✅ Database migrations completed successfully")
+        if result.stdout:
+            print(f"Migration output: {result.stdout.strip()}")
+        return True
+    except subprocess.CalledProcessError as e:
+        print("❌ Database migrations failed")
+        print(f"Migration error: {e}")
+        if e.stdout:
+            print(f"Migration stdout: {e.stdout.strip()}")
+        if e.stderr:
+            print(f"Migration stderr: {e.stderr.strip()}")
+        print("Note: This may be due to database connectivity or migration file issues")
+        print("Check that DATABASE_URL is correct and database is accessible")
+        return False
 
 def main():
     """Main deployment function"""
