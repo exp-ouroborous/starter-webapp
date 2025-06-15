@@ -24,6 +24,47 @@
   margin: 0;
 }
 
+.env-info {
+  margin-top: 1rem;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 1rem;
+  flex-wrap: wrap;
+}
+
+.env-badge {
+  padding: 0.25rem 0.75rem;
+  border-radius: 12px;
+  font-size: 0.8rem;
+  font-weight: 600;
+  text-transform: uppercase;
+}
+
+.env-badge.development {
+  background-color: #22c55e;
+  color: white;
+}
+
+.env-badge.production {
+  background-color: #dc2626;
+  color: white;
+}
+
+.env-badge.preview {
+  background-color: #f59e0b;
+  color: white;
+}
+
+.api-url {
+  font-size: 0.9rem;
+  color: #888;
+  font-family: monospace;
+  background-color: #f5f5f5;
+  padding: 0.25rem 0.5rem;
+  border-radius: 4px;
+}
+
 .app-main {
   display: flex;
   flex-direction: column;
