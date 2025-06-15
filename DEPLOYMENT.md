@@ -53,22 +53,27 @@ This guide covers deploying the full-stack application to production using Rende
 
 ### 1. Manual Deployment
 
-1. Install Wrangler CLI globally:
+1. Navigate to frontend directory and install dependencies:
    ```bash
-   npm install -g wrangler
+   cd frontend
+   npm ci
    ```
 
 2. Authenticate with Cloudflare:
    ```bash
-   wrangler login
+   npx wrangler login
    ```
 
-3. Deploy from frontend directory:
+3. Build and deploy:
    ```bash
-   cd frontend
-   npm ci
    npm run build
    npm run deploy
+   ```
+
+   Or use npx directly:
+   ```bash
+   npm run build
+   npx wrangler deploy
    ```
 
 ### 2. Automated Deployment with GitHub Actions
