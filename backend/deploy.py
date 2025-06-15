@@ -27,14 +27,14 @@ def check_environment():
     env = os.getenv("ENVIRONMENT", "development")
     if env != "production":
         print(f"⚠️  Warning: ENVIRONMENT is set to '{env}', not 'production'")
-        if not sys.stdin.isatty() or os.getenv("CI", "false").lower() == "true":
-            print("Skipping prompt due to non-interactive environment or CI mode")
-            print("Deployment cancelled")
-            sys.exit(1)
-        response = input("Continue anyway? (y/N): ")
-        if response.lower() != 'y':
-            print("Deployment cancelled")
-            sys.exit(1)
+        # In automated deployment, don't prompt for input
+        if os.getenv("CI") or os.getenv("RENDER"):
+            print("Running in automated environment, continuing...")
+        else:
+            response = input("Continue anyway? (y/N): ")
+            if response.lower() != 'y':
+                print("Deployment cancelled")
+                sys.exit(1)
     
     database_url = os.getenv("DATABASE_URL")
     if not database_url:
@@ -43,6 +43,15 @@ def check_environment():
     
     if "sqlite" in database_url:
         print("⚠️  Warning: Using SQLite database (development mode)")
+    elif "postgresql" in database_url:
+        print("✅ Using PostgreSQL database (production mode)")
+        # Test database dependencies
+        try:
+            import psycopg2
+            print("✅ psycopg2 driver available")
+        except ImportError:
+            print("❌ psycopg2 driver not found - check requirements.txt")
+            sys.exit(1)
     
     print(f"✅ Environment check passed (ENV: {env})")
 

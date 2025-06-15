@@ -114,18 +114,35 @@ After frontend deployment:
 
 ### Common Backend Issues
 
-1. **Database Connection Errors**
-   - Verify `DATABASE_URL` is correct
+1. **Missing PostgreSQL Driver (psycopg2)**
+   ```
+   ModuleNotFoundError: No module named 'psycopg2'
+   ```
+   - **Solution**: Ensure `psycopg2-binary==2.9.9` is in `requirements.txt`
+   - Check that pip is upgraded before installing dependencies
+   - Verify build command includes: `pip install --upgrade pip`
+
+2. **Database Connection Errors**
+   - Verify `DATABASE_URL` is correct and includes all parameters
    - Check if database is accessible from Render
    - Review migration logs in deployment
+   - Ensure PostgreSQL database is created and running
 
-2. **CORS Errors**
+3. **Alembic Migration Failures**
+   - Check that all models are imported in `alembic/env.py`
+   - Verify database URL is accessible during migration
+   - Review migration file for syntax errors
+   - Check that base models are properly defined
+
+4. **CORS Errors**
    - Ensure `FRONTEND_URL` is set correctly
    - Check that frontend URL matches exactly (no trailing slash)
+   - Verify CORS middleware is properly configured
 
-3. **Environment Variable Issues**
+5. **Environment Variable Issues**
    - Verify all required variables are set in Render
    - Check for typos in variable names
+   - Ensure variables are available during build process
 
 ### Common Frontend Issues
 
