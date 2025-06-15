@@ -5,9 +5,13 @@ from app.core.config import settings
 
 def get_engine():
     """Create database engine with appropriate configuration"""
+    print(f"🔍 Original DATABASE_URL: {settings.DATABASE_URL}")
+    
     # Configure engine based on database type
     if "sqlite" in settings.DATABASE_URL:
         # SQLite configuration for development
+        print(f"🔧 Using SQLite configuration")
+        print(f"🔗 Final database URL: {settings.DATABASE_URL}")
         return create_engine(
             settings.DATABASE_URL,
             connect_args={"check_same_thread": False}
@@ -16,8 +20,15 @@ def get_engine():
         # PostgreSQL configuration for production
         # Convert postgresql:// to postgresql+psycopg:// for psycopg3 driver
         database_url = settings.DATABASE_URL
+        original_url = database_url
         if database_url.startswith("postgresql://"):
             database_url = database_url.replace("postgresql://", "postgresql+psycopg://", 1)
+            print(f"🔧 Using PostgreSQL configuration with psycopg3 driver")
+            print(f"🔄 Converted URL from: {original_url}")
+            print(f"🔗 Final database URL: {database_url}")
+        else:
+            print(f"🔧 Using PostgreSQL configuration")
+            print(f"🔗 Final database URL: {database_url}")
         
         return create_engine(
             database_url,
@@ -28,6 +39,8 @@ def get_engine():
         )
     else:
         # Fallback configuration
+        print(f"🔧 Using fallback configuration")
+        print(f"🔗 Final database URL: {settings.DATABASE_URL}")
         return create_engine(settings.DATABASE_URL)
 
 # Create engine lazily
