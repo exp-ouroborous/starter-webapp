@@ -1,0 +1,17 @@
+name = "starter-webapp-frontend"
+compatibility_date = "2024-06-15"
+
+[build]
+command = "npm run build"
+destination = "dist"
+
+[[env_vars]]
+name = "VITE_API_URL"
+value = "https://your-backend.onrender.com"
+
+[env.production]
+name = "starter-webapp-frontend"
+
+[[env.production.env_vars]]
+name = "VITE_API_URL"
+value = "https://your-backend.onrender.com"
