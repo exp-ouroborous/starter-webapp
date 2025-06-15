@@ -14,13 +14,13 @@ function App() {
     fetch(`${apiUrl}/api/hello`)
       .then(res => res.json())
       .then(data => setMessage(data.message))
-      .catch(err => setMessage('Failed to connect to API'))
+      .catch(() => setMessage('Failed to connect to API'))
 
     // Check health status
     fetch(`${apiUrl}/health`)
       .then(res => res.json())
       .then(data => setHealth(data.status))
-      .catch(err => setHealth('unhealthy'))
+      .catch(() => setHealth('unhealthy'))
 
     // Get users
     fetch(`${apiUrl}/api/users`)

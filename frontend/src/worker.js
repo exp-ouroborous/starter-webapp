@@ -113,7 +113,7 @@ async function handleRequest(request, env) {
 
 // Export the fetch handler
 export default {
-  async fetch(request, env, ctx) {
+  async fetch(request, env) {
     return handleRequest(request, env);
   }
 };
