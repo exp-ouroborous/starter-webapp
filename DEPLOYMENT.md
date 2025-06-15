@@ -114,11 +114,13 @@ After frontend deployment:
 
 ### Common Backend Issues
 
-1. **Missing PostgreSQL Driver (psycopg2)**
+1. **PostgreSQL Driver Issues**
    ```
    ModuleNotFoundError: No module named 'psycopg2'
+   ImportError: undefined symbol: _PyInterpreterState_Get
    ```
-   - **Solution**: Ensure `psycopg2-binary==2.9.9` is in `requirements.txt`
+   - **Solution**: Using `psycopg[binary]==3.2.9` for Python 3.13 compatibility
+   - Database URL automatically converted from `postgresql://` to `postgresql+psycopg://`
    - Check that pip is upgraded before installing dependencies
    - Verify build command includes: `pip install --upgrade pip`
 
