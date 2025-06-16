@@ -9,7 +9,7 @@ binding = "ASSETS"
 
 # Build configuration
 [build]
-command = "npm ci && npm run build && npm run build:worker"
+command = "npm install && npm run build && npm run build:worker"
 
 # Default environment variables (production)
 [vars]
