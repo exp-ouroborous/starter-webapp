@@ -9,7 +9,7 @@ binding = "ASSETS"
 
 # Build configuration
 [build]
-command = "npm install && npm run build && npm run build:worker"
+command = "npm install && VITE_API_URL=https://starter-webapp-backend.onrender.com VITE_ENVIRONMENT=production npm run build && npm run build:worker"
 
 # Default environment variables (production)
 [vars]
