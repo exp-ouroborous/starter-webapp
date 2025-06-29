@@ -172,7 +172,7 @@ def main():
     print(f"Status: {message}")
     
     if not is_merged:
-        print(f"\nL Branch '{current_branch}' has NOT been merged to main!")
+        print(f"\nBranch '{current_branch}' has NOT been merged to main!")
         print("This branch contains commits that are not in main.")
         print("Please merge this branch first or use 'git branch -D' to force delete.")
         sys.exit(1)
