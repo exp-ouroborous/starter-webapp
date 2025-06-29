@@ -8,25 +8,43 @@ A complete starter template for building full-stack web applications with:
 
 ## Quick Start
 
-Run both backend and frontend simultaneously for full-stack development:
+### Easy Setup (Recommended)
 
-1. **Start Backend** (Terminal 1):
+Use our development helper scripts for a streamlined setup:
+
+1. **Backend Setup** (Terminal 1):
 ```bash
 cd backend
-source venv/bin/activate  # Skip if already activated
-uvicorn app.main:app --reload
+python -m venv venv && source venv/bin/activate  # Create and activate virtual environment
+python dev.py setup    # Install dependencies, create .env, setup database
+python dev.py server   # Start development server
 ```
 
-2. **Start Frontend** (Terminal 2):
+2. **Frontend Setup** (Terminal 2):
 ```bash
 cd frontend
-npm run dev
+node dev.js setup      # Install dependencies and create .env
+node dev.js server     # Start development server
 ```
 
 3. **Access Application**:
    - Frontend: `http://localhost:5173`
    - Backend API: `http://localhost:8000`
    - API Docs: `http://localhost:8000/docs`
+
+### Alternative Setup
+
+You can also use traditional commands or Makefiles:
+
+```bash
+# Using Make (if available)
+cd backend && make setup && make server
+cd frontend && make setup && make server
+
+# Using npm/pip directly
+cd backend && uvicorn app.main:app --reload
+cd frontend && npm run dev
+```
 
 ## Backend Setup
 
@@ -301,18 +319,49 @@ For detailed deployment instructions, see [DEPLOYMENT.md](DEPLOYMENT.md).
 
 ## Development
 
-This project follows a monorepo structure with separate backend and frontend directories. Each component can be developed independently while sharing the same repository.
+This project includes comprehensive development tools and helpers for a smooth development experience.
+
+### 🛠️ Development Tools
+
+**Helper Scripts:**
+- `backend/dev.py` - Python development helper with commands for setup, server, database operations, linting, etc.
+- `frontend/dev.js` - Node.js development helper with commands for setup, server, build, deploy, etc.
+- `Makefiles` - Traditional make commands for both backend and frontend
+
+**Available Commands:**
+```bash
+# Backend
+python dev.py setup      # Complete environment setup
+python dev.py server     # Start development server
+python dev.py db-migrate "message"  # Create database migration
+python dev.py lint       # Check code quality
+python dev.py format     # Format code
+
+# Frontend  
+node dev.js setup        # Complete environment setup
+node dev.js server       # Start development server
+node dev.js build        # Build for production
+node dev.js lint         # Check code quality
+node dev.js fix          # Fix formatting issues
+```
+
+**Documentation:**
+- `DEVELOPMENT.md` - Comprehensive development setup and workflow guide
+- Enhanced `.env.example` files with detailed configuration options
 
 ### Environment Variables
 
-Copy `.env.example` to `.env` and configure:
+Both backend and frontend include comprehensive `.env.example` files. Copy and customize:
 
-```env
-DATABASE_URL=postgresql://username:password@localhost:5432/starter_webapp
-ENVIRONMENT=development
-DEBUG=true
-FRONTEND_URL=http://localhost:5173
+```bash
+# Backend
+cp backend/.env.example backend/.env
+
+# Frontend  
+cp frontend/.env.example frontend/.env
 ```
+
+For detailed development instructions, see [DEVELOPMENT.md](DEVELOPMENT.md).
 
 ## Contributing
 
