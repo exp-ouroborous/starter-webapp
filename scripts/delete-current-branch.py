@@ -3,6 +3,7 @@
 Delete Current Branch Script
 
 This script safely deletes the current branch after verifying it has been merged to main.
+Handles both regular merges and squash-and-merge workflows.
 
 REQUIREMENTS:
     pip install GitPython
@@ -13,10 +14,15 @@ USAGE:
 WHAT IT DOES:
     - Gets the current branch name
     - Pulls latest changes from main
-    - Verifies the current branch has been merged to main
+    - Verifies the current branch has been merged to main (or squash merged)
     - Prompts user for confirmation before deletion
     - Deletes the branch and switches back to main
     - Handles safety checks to prevent accidental deletion
+    
+SQUASH MERGE DETECTION:
+    - Checks if remote branch has been deleted (indicates merge)
+    - Looks for branch name references in recent main commits
+    - Safely handles cases where commits don't match due to squashing
 """
 
 import git
@@ -58,23 +64,43 @@ def pull_main(repo):
         return False
 
 def check_merge_status(repo, branch_name):
-    """Check if the branch has been merged to main."""
+    """Check if the branch has been merged to main (handles squash and merge)."""
     try:
-        # Get commits from both branches
-        main_commits = set(commit.hexsha for commit in repo.iter_commits('main'))
-        branch_commits = set(commit.hexsha for commit in repo.iter_commits(branch_name))
+        # For squash and merge workflows, we need to check if the remote branch exists
+        # If the remote branch has been deleted, it's likely been merged
         
-        # Check if all branch commits are in main
-        if branch_commits.issubset(main_commits):
-            return True, "All commits from this branch are present in main"
-        else:
-            # Check for unmerged commits
-            unmerged_commits = list(repo.iter_commits(f'main..{branch_name}'))
-            if unmerged_commits:
-                return False, f"Branch has {len(unmerged_commits)} unmerged commits"
+        # First check if remote branch still exists
+        remote_branches = [ref.name.replace('origin/', '') for ref in repo.remotes.origin.refs if 'HEAD' not in ref.name]
+        remote_branch_exists = branch_name in remote_branches
+        
+        # Check for unmerged commits (commits ahead of main)
+        unmerged_commits = list(repo.iter_commits(f'main..{branch_name}'))
+        
+        if not unmerged_commits:
+            # No commits ahead of main - safe to delete
+            return True, "Branch has no commits ahead of main (safe to delete)"
+        
+        if not remote_branch_exists:
+            # Remote branch deleted and we have local commits - likely squash merged
+            return True, f"Remote branch deleted, local has {len(unmerged_commits)} commits (likely squash merged)"
+        
+        # Remote branch exists and we have unmerged commits
+        if len(unmerged_commits) > 0:
+            # Check if this might be a squash merge scenario by examining commit messages
+            # Look for recent commits in main that might contain the branch name
+            recent_main_commits = list(repo.iter_commits('main', max_count=10))
+            branch_mentioned_in_main = any(
+                branch_name.replace('/', '-') in commit.message.lower() or 
+                branch_name.split('/')[-1] in commit.message.lower()
+                for commit in recent_main_commits
+            )
+            
+            if branch_mentioned_in_main:
+                return True, f"Branch likely squash merged (found reference in recent main commits)"
             else:
-                # Branch is behind main but no unique commits
-                return True, "Branch has no unique commits (safe to delete)"
+                return False, f"Branch has {len(unmerged_commits)} unmerged commits and remote branch exists"
+        
+        return True, "Branch appears to be merged"
                 
     except Exception as e:
         return False, f"Could not check merge status: {e}"
