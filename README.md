@@ -227,6 +227,9 @@ starter-webapp/
 ├── README.md                     # This file - project overview
 ├── DEVELOPMENT.md               # Detailed development setup guide
 ├── DEPLOYMENT.md                # Production deployment guide
+├── WORKFLOW.md                  # Development workflows and team practices
+├── SCAFFOLD.md                  # Scaffold tool documentation
+├── scaffold.py                  # Tool to generate new projects from template
 ├── Plan.md                      # Implementation plan and roadmap
 ├── backend/                     # FastAPI backend
 │   ├── app/
@@ -398,6 +401,32 @@ cp frontend/.env.example frontend/.env
 ```
 
 For detailed development instructions, see [DEVELOPMENT.md](DEVELOPMENT.md).
+
+## 🏗️ Creating New Projects
+
+### Scaffold Tool
+
+Use the included scaffold tool to generate new projects from this template:
+
+```bash
+# Interactive mode (recommended)
+python scaffold.py
+
+# Command line mode
+python scaffold.py --name my-awesome-app --description "My awesome application"
+
+# See all options
+python scaffold.py --help
+```
+
+**What the scaffold tool does:**
+- 📁 Copies template structure with your project name
+- 🔧 Updates all configurations and documentation
+- 🔄 Initializes git repository with initial commit
+- 📦 Sets up development environment and dependencies
+- 📋 Creates comprehensive project documentation
+
+For detailed scaffold documentation, see [SCAFFOLD.md](SCAFFOLD.md).
 
 ## 🤔 FAQ
 
