@@ -1,0 +1,81 @@
+{
+    "version": "2.0.0",
+    "tasks": [
+        {
+            "label": "Compare Branches",
+            "type": "shell",
+            "command": "python3",
+            "args": ["scripts/compare-branches.py"],
+            "group": "build",
+            "presentation": {
+                "echo": true,
+                "reveal": "always",
+                "focus": false,
+                "panel": "new",
+                "showReuseMessage": true,
+                "clear": false
+            },
+            "problemMatcher": [],
+            "detail": "Compare local vs remote Git branches and show merge status"
+        },
+        {
+            "label": "Start Frontend",
+            "type": "shell",
+            "command": "npm",
+            "args": ["run", "dev"],
+            "options": {
+                "cwd": "${workspaceFolder}/frontend"
+            },
+            "group": "build",
+            "presentation": {
+                "echo": true,
+                "reveal": "always",
+                "focus": false,
+                "panel": "new",
+                "showReuseMessage": false,
+                "clear": true
+            },
+            "problemMatcher": [],
+            "detail": "Start React frontend development server (Vite)"
+        },
+        {
+            "label": "Start Backend",
+            "type": "shell",
+            "command": "uvicorn",
+            "args": ["app.main:app", "--reload"],
+            "options": {
+                "cwd": "${workspaceFolder}/backend",
+                "env": {
+                    "PATH": "${workspaceFolder}/backend/venv/bin:${env:PATH}"
+                }
+            },
+            "group": "build",
+            "presentation": {
+                "echo": true,
+                "reveal": "always",
+                "focus": false,
+                "panel": "new",
+                "showReuseMessage": false,
+                "clear": true
+            },
+            "problemMatcher": [],
+            "detail": "Start FastAPI backend development server"
+        },
+        {
+            "label": "Start Full Stack",
+            "dependsOrder": "parallel",
+            "dependsOn": ["Start Frontend", "Start Backend"],
+            "group": "build",
+            "presentation": {
+                "echo": true,
+                "reveal": "always",
+                "focus": false,
+                "panel": "new",
+                "showReuseMessage": false,
+                "clear": false
+            },
+            "problemMatcher": [],
+            "detail": "Start both frontend and backend development servers"
+        }
+    ]
+}
