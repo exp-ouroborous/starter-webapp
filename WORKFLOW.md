@@ -57,15 +57,7 @@ git checkout -b feature/your-feature-name
 ```
 
 ### 2. Development Phase
-```bash
-# Set up development environment
-cd backend && python dev.py setup
-cd frontend && node dev.js setup
-
-# Start development servers
-cd backend && python dev.py server    # Terminal 1
-cd frontend && node dev.js server     # Terminal 2
-```
+See [DEVELOPMENT.md](DEVELOPMENT.md) for detailed setup and server commands.
 
 ### 3. Coding Standards
 - **Backend**: Follow PEP 8, use type hints, write docstrings
@@ -74,31 +66,10 @@ cd frontend && node dev.js server     # Terminal 2
 - **Testing**: Write tests for new features
 
 ### 4. Quality Checks
-```bash
-# Backend quality checks
-cd backend
-python dev.py lint          # Check code style
-python dev.py format        # Auto-format code
-python dev.py test          # Run tests
-
-# Frontend quality checks  
-cd frontend
-node dev.js lint            # Check code style
-node dev.js fix             # Auto-fix issues
-node dev.js test            # Run tests
-```
+Run quality checks before committing - see [DEVELOPMENT.md](DEVELOPMENT.md) for detailed commands.
 
 ### 5. Database Changes
-```bash
-# If you modified database models
-cd backend
-python dev.py db-migrate "descriptive message"
-python dev.py db-upgrade
-
-# Test with fresh database
-python dev.py db-reset      # ⚠️ Deletes all data
-python dev.py db-upgrade
-```
+If you modified database models, see database management section in [DEVELOPMENT.md](DEVELOPMENT.md).
 
 ### 6. Commit and Push
 ```bash
@@ -287,34 +258,8 @@ Examples:
 
 ## 🧪 Testing Strategy
 
-### Development Testing
-```bash
-# Run tests during development
-cd backend && python dev.py test
-cd frontend && node dev.js test
-
-# Run specific tests
-cd backend && pytest tests/test_auth.py
-cd frontend && npm test -- --testNamePattern="Auth"
-```
-
-### Pre-commit Testing
-```bash
-# Full test suite before committing
-make test-all  # If Makefile available
-# OR
-cd backend && python dev.py test && python dev.py lint
-cd frontend && node dev.js test && node dev.js lint
-```
-
-### Integration Testing
-```bash
-# Test full stack locally
-# 1. Start both servers
-# 2. Run end-to-end tests
-# 3. Check all API endpoints
-# 4. Verify database operations
-```
+### Testing Strategy
+See [DEVELOPMENT.md](DEVELOPMENT.md) for detailed testing commands and procedures.
 
 ## 🔧 Environment Management
 
@@ -350,18 +295,14 @@ cp frontend/.env.example frontend/.env
 
 ## 🆘 Troubleshooting Workflow Issues
 
-### Common Issues
+### Common Workflow Issues
 1. **Merge conflicts**: Use `git rebase` or merge tools
-2. **Failed tests**: Check logs and fix issues
-3. **Build failures**: Verify dependencies and environment
-4. **Deployment issues**: Check configuration and logs
+2. **Failed CI/CD**: Check logs and fix issues  
+3. **Review blockers**: Address feedback promptly
 
 ### Getting Help
-1. **Check documentation** (this guide, README, etc.)
-2. **Review recent changes** that might have caused issues
-3. **Check CI/CD logs** for specific error messages
-4. **Ask team members** for assistance
-5. **Create GitHub issues** for persistent problems
+For technical issues, see comprehensive troubleshooting in [DEVELOPMENT.md](DEVELOPMENT.md).
+For workflow questions, consult team leads or create GitHub issues.
 
 ---
 
@@ -384,18 +325,7 @@ git push origin branch-name
 ```
 
 ### Emergency Commands
-```bash
-# Reset development environment
-python dev.py clean && python dev.py setup
-node dev.js clean && node dev.js setup
-
-# Reset database (⚠️ deletes data)
-python dev.py db-reset
-
-# Force fresh install
-rm -rf node_modules venv
-npm install && python -m venv venv && pip install -r requirements.txt
-```
+See [DEVELOPMENT.md](DEVELOPMENT.md) for comprehensive troubleshooting and reset commands.
 
 ---
 

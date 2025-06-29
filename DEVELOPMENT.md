@@ -270,37 +270,160 @@ VITE_ENVIRONMENT=development
    - Frontend default: 5173
    - Change ports in respective configuration files
 
-### Getting Help
+### Comprehensive Troubleshooting
 
-1. Check the browser console for frontend errors
-2. Check terminal output for backend errors
-3. Use the `/health` endpoint to verify backend status
-4. Check the API documentation at http://localhost:8000/docs
+#### Backend Issues
+
+**Backend won't start:**
+- Ensure virtual environment is activated: `source venv/bin/activate`
+- Install dependencies: `pip install -r requirements.txt`
+- Check if port 8000 is already in use
+- Verify Python version (3.8+)
+
+**Database errors:**
+- Reset database: `python dev.py db-reset` (⚠️ deletes all data)
+- Check database URL in `.env`
+- Run migrations: `python dev.py db-upgrade`
+- Verify database file permissions
+
+**Import/Module errors:**
+- Ensure you're in the correct directory (`backend/`)
+- Check virtual environment is activated
+- Reinstall dependencies: `pip install -r requirements.txt`
+
+#### Frontend Issues
+
+**Frontend won't start:**
+- Install dependencies: `npm install`
+- Check if port 5173 is already in use
+- Verify Node.js version (18+)
+- Clear node modules: `rm -rf node_modules && npm install`
+
+**API connection problems:**
+- Verify backend is running on http://localhost:8000
+- Check `VITE_API_URL` in frontend `.env`
+- Look for CORS errors in browser console
+- Test API directly: `curl http://localhost:8000/health`
+
+**Build failures:**
+- Clear Vite cache: `rm -rf node_modules/.vite`
+- Check for TypeScript errors
+- Verify all imports are correct
+
+#### Full-Stack Integration Issues
+
+**CORS errors:**
+- Ensure `FRONTEND_URL` is set correctly in backend `.env`
+- Check CORS middleware configuration in `backend/app/main.py`
+- Verify both servers are running
+
+**Environment variable issues:**
+- Frontend: Variables must start with `VITE_`
+- Backend: Check `.env` file exists and is properly formatted
+- Restart servers after changing environment variables
+
+#### Development Workflow Issues
+
+**Git/Version control:**
+- Ensure you're on the correct branch
+- Check for uncommitted changes: `git status`
+- Pull latest changes: `git pull origin main`
+
+**Dependency conflicts:**
+- Backend: Create fresh virtual environment
+- Frontend: Delete `node_modules` and reinstall
+- Check for version conflicts in requirements/package files
+
+#### Quick Fix Commands
+
+```bash
+# Complete backend reset
+cd backend
+python dev.py clean && python dev.py setup
+
+# Complete frontend reset  
+cd frontend
+node dev.js clean && node dev.js setup
+
+# Test basic connectivity
+curl http://localhost:8000/health
+curl http://localhost:8000/api/hello
+
+# Check running processes
+lsof -i :8000  # Backend port
+lsof -i :5173  # Frontend port
+```
+
+### Getting Additional Help
+
+1. **Check logs and error messages** in terminal output
+2. **Test API endpoints** directly using curl or Postman
+3. **Review browser console** for frontend errors
+4. **Check network tab** for failed API requests
+5. **Verify environment variables** are loaded correctly
+6. **Compare with working setup** if you have one
+
+## Comprehensive FAQ
+
+### Development Questions
+
+**Q: How do I add a new API endpoint?**
+A: Add your route in `backend/app/api/routes.py`, test at `/docs`, then update frontend to use it.
+
+**Q: How do I add a new React component?**  
+A: Create your component in `frontend/src/components/`, import and use in your pages.
+
+**Q: How do I change the database schema?**
+A: Modify `backend/app/db/models.py`, then run `python dev.py db-migrate "description"` and `python dev.py db-upgrade`.
+
+**Q: How do I reset my development database?**
+A: Run `python dev.py db-reset` (⚠️ Warning: This deletes all data).
+
+**Q: How do I run tests?**
+A: Use `python dev.py test` for backend and `node dev.js test` for frontend.
+
+**Q: How do I check code quality?**
+A: Use `python dev.py lint` and `node dev.js lint` to check code style.
+
+**Q: How do I format my code automatically?**
+A: Use `python dev.py format` and `node dev.js fix` to auto-format.
+
+### Environment and Configuration
+
+**Q: What environment variables do I need?**
+A: Copy `.env.example` to `.env` in both backend and frontend directories and customize as needed.
+
+**Q: How do I use different database configurations?**
+A: Update `DATABASE_URL` in `backend/.env` for different databases (SQLite for dev, PostgreSQL for production).
+
+**Q: How do I run on different ports?**
+A: Backend: Set `PORT` in `.env` or use `--port` flag. Frontend: Set `VITE_DEV_PORT` in `.env`.
+
+### Workflow and Git
+
+**Q: What's the recommended Git workflow?**
+A: See [WORKFLOW.md](WORKFLOW.md) for comprehensive branching and development practices.
+
+**Q: How do I contribute to the project?**
+A: Fork the repo, create a feature branch, make changes, test thoroughly, and submit a PR following [WORKFLOW.md](WORKFLOW.md).
+
+**Q: What commit message format should I use?**
+A: Follow conventional commits: `type(scope): description` (e.g., `feat: add user authentication`).
+
+### Deployment and Production
+
+**Q: How do I deploy to production?**
+A: See [DEPLOYMENT.md](DEPLOYMENT.md) for complete deployment instructions to Render and Cloudflare.
+
+**Q: How do I prepare for production deployment?**
+A: Set environment variables, run migrations, build frontend, and follow the deployment checklist.
+
+**Q: What's different between development and production?**
+A: Production uses PostgreSQL, different CORS settings, and optimized builds. Environment variables control these differences.
 
 ## Project Structure
 
-```
-starter-webapp/
-├── backend/                 # FastAPI backend
-│   ├── app/
-│   │   ├── api/            # API routes
-│   │   ├── core/           # Configuration
-│   │   ├── db/             # Database models
-│   │   └── main.py         # FastAPI app
-│   ├── dev.py              # Development helper script
-│   ├── Makefile            # Development commands
-│   ├── requirements.txt    # Python dependencies
-│   └── .env.example        # Environment template
-├── frontend/               # React frontend
-│   ├── src/
-│   │   ├── App.jsx         # Main React component
-│   │   └── main.jsx        # React entry point
-│   ├── dev.js              # Development helper script
-│   ├── Makefile            # Development commands
-│   ├── package.json        # Node dependencies
-│   └── .env.example        # Environment template
-└── DEVELOPMENT.md          # This file
-```
+See the detailed project structure in [README.md](README.md#-project-structure).
 
 ## Next Steps
 
